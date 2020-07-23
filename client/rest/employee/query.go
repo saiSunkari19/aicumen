@@ -1,6 +1,6 @@
 package employee
 
-import 	(
+import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
@@ -72,5 +72,29 @@ func QueryEmployees(cliCtx context.CLIContext, r *mux.Router) http.HandlerFunc {
 			cliCtx.Codec.MustUnmarshalJSON(res, &data)
 		}
 		rest.PostProcessResponse(w, cliCtx, data)
+	}
+}
+
+// -----------------------------------------------
+func QueryInActiveEmployeesInfo(cliCtx context.CLIContext, r *mux.Router) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		log.Info().Str("METHOD", r.Method).Str("URL", r.RequestURI).Str("HOST", r.RemoteAddr).Msg("Query InActive Employees ")
+
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/%s", org.ModuleName, org.QueryDeActiveEmployees), nil)
+		if rest.CheckInternalServerError(w, err) {
+			return
+		}
+
+		if len(res) == 0 {
+			rest.WriteErrorResponse(w, http.StatusInternalServerError, fmt.Sprintf("data is empty"))
+			return
+		}
+
+		var data org.Employess
+		cliCtx.Codec.MustUnmarshalJSON(res, &data)
+		rest.PostProcessResponse(w, cliCtx, data)
+
 	}
 }

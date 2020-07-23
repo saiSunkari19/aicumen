@@ -6,31 +6,6 @@ import (
 	"strings"
 )
 
-type Skills []string
-
-func (s Skills) String() string {
-	var a string
-	if len(s) == 0 {
-		return ""
-	}
-	for _, skill := range s {
-		a = a + "\n" + skill
-	}
-
-	return a[:len(a)-1]
-}
-
-func (s Skills) Len() int           { return len(s) }
-func (s Skills) Less(i, j int) bool { return s[i] < s[j] }
-func (s Skills) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
-
-var _ sort.Interface = Skills{}
-
-func (Skills Skills) Sort() Skills {
-	sort.Sort(Skills)
-	return Skills
-}
-
 // -----------------------------------------------------------------
 type Person struct {
 	Name    string `json:"name"`

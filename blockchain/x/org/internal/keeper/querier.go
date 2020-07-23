@@ -56,7 +56,7 @@ func queryEmployeeById(ctx sdk.Context, path []string, k Keeper) ([]byte, error)
 func queryActiveEmployees(ctx sdk.Context, k Keeper) ([]byte, error) {
 	employees := k.GetActiveEmployees(ctx)
 	if len(employees) == 0 {
-		return nil, sdkerrors.Wrap(types.ErrEmployee, "")
+		return nil, nil
 	}
 
 	res, err := codec.MarshalJSONIndent(k.cdc, employees)
@@ -70,7 +70,7 @@ func queryActiveEmployees(ctx sdk.Context, k Keeper) ([]byte, error) {
 func queryDeActiveEmployees(ctx sdk.Context, k Keeper) ([]byte, error) {
 	employees := k.GetDeActiveEmployees(ctx)
 	if len(employees) == 0 {
-		return nil, sdkerrors.Wrap(types.ErrEmployee, "")
+		return nil, nil
 	}
 
 	res, err := codec.MarshalJSONIndent(k.cdc, employees)
@@ -84,7 +84,7 @@ func queryDeActiveEmployees(ctx sdk.Context, k Keeper) ([]byte, error) {
 func queryByDepartment(ctx sdk.Context, path []string, k Keeper) ([]byte, error) {
 	employees := k.GetActiveEmployees(ctx)
 	if len(employees) == 0 {
-		return nil, sdkerrors.Wrap(types.ErrEmployee, "")
+		return nil, nil
 	}
 	var byDept types.Employess
 
@@ -105,7 +105,7 @@ func queryByDepartment(ctx sdk.Context, path []string, k Keeper) ([]byte, error)
 func queryByName(ctx sdk.Context, path []string, k Keeper) ([]byte, error) {
 	employees := k.GetActiveEmployees(ctx)
 	if len(employees) == 0 {
-		return nil, sdkerrors.Wrap(types.ErrEmployee, "")
+		return nil, nil
 	}
 	var byName types.Employess
 

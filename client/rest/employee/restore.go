@@ -10,23 +10,19 @@ import (
 	"net/http"
 )
 
-// TX ---------------------------------------------------
-type AddEmployeeBody struct {
-	BaseReq    rest.BaseReq `json:"base_req"`
-	Name       string       `json:"name" validate:"required"`
-	Department string       `json:"department"`
-	Skills     []string     `json:"skills"`
-	Address    string       `json:"address"`
-	Password   string       `json:"password"`
+type RestoreEmployeeBody struct {
+	BaseReq  rest.BaseReq `json:"base_req"`
+	ID       string       `json:"id" validate:"required"`
+	Password string       `json:"password"`
 }
 
-func AddEmployee(cli *config.CLI) http.HandlerFunc {
+func RestoreEmployee(cli *config.CLI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Info().Str("METHOD", r.Method).Str("URL", r.RequestURI).Str("HOST", r.RemoteAddr).Msg("Adding Employee info")
+		log.Info().Str("METHOD", r.Method).Str("URL", r.RequestURI).Str("HOST", r.RemoteAddr).Msg("Restore Employee info")
 
 		v := validator.New()
 
-		var req AddEmployeeBody
+		var req RestoreEmployeeBody
 		if !rest.ReadRESTReq(w, r, cli.CliCtx.Codec, &req) {
 			return
 		}
@@ -37,7 +33,7 @@ func AddEmployee(cli *config.CLI) http.HandlerFunc {
 			return
 		}
 
-		msg := org.NewMsgAddEmployee(req.Name, req.Department, req.Address, req.Skills, cli.CliCtx.GetFromAddress())
+		msg := org.NewMsgRestoreEmployeeInfo(req.ID, cli.CliCtx.GetFromAddress())
 		if rest.CheckBadRequestError(w, msg.ValidateBasic()) {
 			return
 		}

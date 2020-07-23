@@ -20,19 +20,26 @@ const (
 )
 
 type (
-	MsgAddEmployee = types.MsgAddEmployee
-	Person         = types.Person
-	Employee       = types.Employee
-	Employess      = types.Employess
-	Skills         = types.Skills
-	Status         = types.Status
-	GenesisState   = types.GenesisState
-	Keeper         = keeper.Keeper
+	MsgAddEmployee         = types.MsgAddEmployeeInfo
+	MsgUpdateEmployeeInfo  = types.MsgUpdateEmployeeInfo
+	MsgDeleteEmployeeInfo  = types.MsgDeleteEmployeeInfo
+	MsgRestoreEmployeeInfo = types.MsgRestoreEmployeeInfo
+
+	Person       = types.Person
+	Employee     = types.Employee
+	Employess    = types.Employess
+	Skills       = types.Skills
+	Status       = types.Status
+	GenesisState = types.GenesisState
+	Keeper       = keeper.Keeper
 )
 
 var (
-	NewKeeper         = keeper.NewKeeper
-	NewMsgAddEmployee = types.NewMsgAddEmployee
+	NewKeeper                 = keeper.NewKeeper
+	NewMsgAddEmployee         = types.NewMsgAddEmployeeInfo
+	NewMsgUpdateEmployeeInfo  = types.NewMsgUpdateEmployeeInfo
+	NewMsgDeleteEmployeeInfo  = types.NewMsgDeleteEmployeeInfo
+	NewMsgRestoreEmployeeInfo = types.NewMsgRestoreEmployeeInfo
 
 	RegisterCodec = types.RegisterCodec
 	ModuleCdc     = types.ModuleCdc
@@ -40,4 +47,5 @@ var (
 	NewQuerier = keeper.NewQuerier
 
 	GetEmployeePrefixKey = types.GetEmployeePrefixKey
+	ErrEmployee          = types.ErrEmployee
 )
