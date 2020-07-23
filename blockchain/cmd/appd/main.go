@@ -23,7 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	"github.com/saiSunkari19/aicumen/blockchain/app"
-    internal "github.com/saiSunkari19/aicumen/blockchain/types"
+	internal "github.com/saiSunkari19/aicumen/blockchain/types"
 )
 
 const flagInvCheckPeriod = "inv-check-period"

@@ -32,15 +32,16 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	// TODO : Import of nft & xnft
+
+	"github.com/saiSunkari19/aicumen/blockchain/x/org"
 )
 
-const appName ="app"
+const appName = "app"
 
 var (
 
 	// DefaultCLIHome default home directories for the application CLI
 	DefaultCLIHome = os.ExpandEnv("$HOME/.appcli")
-
 
 	// DefaultNodeHome sets the folder where the applcation data and configuration will be stored
 	DefaultNodeHome = os.ExpandEnv("$HOME/.appd")
@@ -62,6 +63,7 @@ var (
 		transfer.AppModuleBasic{},
 
 		// TODO: Add nft & xnft module(s) AppModuleBasic
+		org.AppModuleBasic{},
 
 	)
 
@@ -113,11 +115,13 @@ type NewApp struct {
 	paramsKeeper     params.Keeper
 	ibcKeeper        *ibc.Keeper
 	transferKeeper   transfer.Keeper
-    // TODO: Add nft & xnft Keeper
+	// TODO: Add nft & xnft Keeper
+
+	orgKeeper org.Keeper
 
 	scopedIBCKeeper      capability.ScopedKeeper
 	scopedTransferKeeper capability.ScopedKeeper
-    // TODO: Add scoped xnft Keeper
+	// TODO: Add scoped xnft Keeper
 
 	// Module Manager
 	mm *module.Manager
@@ -146,7 +150,7 @@ func NewInitApp(
 	// TODO: Add nft & xnft keys that module requires
 	keys := sdk.NewKVStoreKeys(auth.StoreKey, bank.StoreKey, staking.StoreKey,
 		distr.StoreKey, slashing.StoreKey, params.StoreKey, capability.StoreKey,
-		ibc.StoreKey, transfer.StoreKey)
+		ibc.StoreKey, transfer.StoreKey, org.StoreKey)
 
 	tKeys := sdk.NewTransientStoreKeys(params.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capability.MemStoreKey)
@@ -216,6 +220,8 @@ func NewInitApp(
 
 	// TODO: initialize nft & xnft Keepers
 
+	app.orgKeeper = org.NewKeeper(app.cdc, keys[org.StoreKey])
+
 	ibcRouter := port.NewRouter()
 	ibcRouter.AddRoute(transfer.ModuleName, transferModule)
 	// TODO: Add xnft Route
@@ -247,8 +253,6 @@ func NewInitApp(
 			app.slashingKeeper.Hooks()),
 	)
 
-
-
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
 	app.mm = module.NewManager(
@@ -262,6 +266,7 @@ func NewInitApp(
 		slashing.NewAppModule(appCodec, app.slashingKeeper, app.accountKeeper, app.bankKeeper, app.stakingKeeper),
 		params.NewAppModule(app.paramsKeeper),
 
+		org.NewAppModule(app.orgKeeper),
 		ibc.NewAppModule(app.ibcKeeper),
 		transferModule,
 
@@ -288,6 +293,7 @@ func NewInitApp(
 		genutil.ModuleName,
 		ibc.ModuleName,
 		transfer.ModuleName,
+		org.ModuleName,
 		// TODO: Init  nft & xnft module(s)
 
 	)

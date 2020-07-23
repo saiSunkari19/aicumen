@@ -1,7 +1,6 @@
 package types
 
 const (
-
 	Bech32MainPrefix = "cosmos"
 
 	PrefixAccount   = "acc"
