@@ -14,8 +14,12 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 
 all: install
 
+
+create-wallet:
+	appcli keys add relayer --keyring-backend test
+
 build:
-		go build -o bin/appd ./cmd/appd
+	go build -o bin/appd ./cmd/appd
 
 # TODO : Think a diffrent way to install
 install: go.sum

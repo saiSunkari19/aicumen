@@ -6,7 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/saiSunkari19/aicumen/blockchain/x/org"
 	"github.com/saiSunkari19/aicumen/client/config"
-
+	validator "gopkg.in/go-playground/validator.v9"
 	"net/http"
 )
 

@@ -1,6 +1,6 @@
 package employee
 
-import (
+import 	(
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
@@ -39,6 +39,7 @@ func QueryEmployees(cliCtx context.CLIContext, r *mux.Router) http.HandlerFunc {
 			data = append(data, employee)
 
 		} else {
+			fmt.Println("dept", dept)
 			if len(dept) > 0 {
 				log.Info().Str("METHOD", r.Method).Str("URL", r.RequestURI).Str("HOST", r.RemoteAddr).Msg("Query Employees By Dept")
 
