@@ -3,7 +3,6 @@ PACKAGES=$(shell go list ./... | grep -v '/simulation')
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 
-# TODO: Update the ldflags with the app, client & server names
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=app \
 	-X github.com/cosmos/cosmos-sdk/version.ServerName=appd \
 	-X github.com/cosmos/cosmos-sdk/version.ClientName=appcli \
@@ -14,12 +13,14 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 
 all: install
 
-
 create-wallet:
 	appcli keys add relayer --keyring-backend test
 
 build:
 	go build -o bin/appd ./cmd/appd
+
+unit-test:
+	go test -mod=readonly ./...
 
 # TODO : Think a diffrent way to install
 install: go.sum
@@ -37,12 +38,9 @@ build-linux:
 docker-test: build-linux
 	docker build -f Dockerfile.test -t saiSunkari19/blockchain:latest .
 
-# Uncomment when you have some tests
-# test:
-# 	@go test -mod=readonly $(PACKAGES)
-
-# look into .golangci.yml for enabling / disabling linters
 lint:
 	@echo "--> Running linter"
 	@golangci-lint run
 	@go mod verify
+
+.PHONY: install unit-test

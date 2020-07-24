@@ -49,4 +49,8 @@ var (
 	
 	GetEmployeePrefixKey = types.GetEmployeePrefixKey
 	ErrEmployee          = types.ErrEmployee
+	
+	CreateTestInput = keeper.CreateTestInput
+	TestEmployee    = keeper.TestEmployee
+	TestAddress1    = keeper.TestAddress1
 )
