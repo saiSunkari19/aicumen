@@ -3,6 +3,7 @@ API Documentation
 
 ### AddEmployee
 - #### Request
+- EndPoint: `/employee/add`
 ```json
 {
     "base_req": {
@@ -24,6 +25,7 @@ API Documentation
 ```
 
 ### UpdateEmployee
+- EndPoint: `/employee/update`
 - Request
 ```json
 {
@@ -48,6 +50,7 @@ API Documentation
 
 
 ### DeleteEmployee
+- EndPoint: `/employee/delete`
 - We have `remove` filed`false`, where it will deactivate the employee info
 - Where `remove` is `true`, it will permanently delete the employee info
 
@@ -84,6 +87,7 @@ API Documentation
 }
 ```
 ### Restore Employee
+- EndPoint: `/employee/restore`
 - Where we `active` the employee info, where it's partially deleted. `remove` is `false`. 
 - Request
 ```json
