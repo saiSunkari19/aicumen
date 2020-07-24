@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-
+	
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-
+	
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	keys "github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -38,17 +38,17 @@ func NewVerifier(dir, id, address string) (*http.HTTP, *lite.DynamicVerifier, er
 	if err != nil {
 		return nil, nil, err
 	}
-
+	
 	c, err := http.New(address, "/websocket")
 	if err != nil {
 		return nil, nil, err
 	}
-
+	
 	verifier, err := proxy.NewVerifier(id, root, c, log.NewNopLogger(), 10)
 	if err != nil {
 		return nil, nil, err
 	}
-
+	
 	return c, verifier, nil
 }
 
@@ -57,16 +57,16 @@ func (c *CLI) GetAccount(address sdk.AccAddress) (auth.BaseAccount, error) {
 	if err != nil {
 		return auth.BaseAccount{}, err
 	}
-
+	
 	res, _, err := c.CliCtx.QueryWithData(fmt.Sprintf("custom/%s/%s", auth.QuerierRoute, auth.QueryAccount), bytes)
 	if err != nil {
 		return auth.BaseAccount{}, nil
 	}
-
+	
 	var account auth.BaseAccount
 	if err := c.CliCtx.Codec.UnmarshalJSON(res, &account); err != nil {
 		return auth.BaseAccount{}, err
 	}
-
+	
 	return account, nil
 }

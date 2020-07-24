@@ -16,5 +16,6 @@ func RegisterRoutes(cliCtx *config.CLI, r *mux.Router) {
 	
 	e.HandleFunc("/list", employee.QueryEmployees(cliCtx.CliCtx, r)).Methods("GET")
 	e.HandleFunc("/viewdeleted", employee.QueryInActiveEmployeesInfo(cliCtx.CliCtx, r)).Methods("GET")
+	e.HandleFunc("/search", employee.QueryBySearch(cliCtx.CliCtx, r)).Methods("GET")
 	
 }
