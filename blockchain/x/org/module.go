@@ -3,15 +3,16 @@ package org
 import (
 	"encoding/json"
 	"fmt"
-
+	
 	"github.com/gorilla/mux"
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
-
+	
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	
 	"github.com/saiSunkari19/aicumen/blockchain/x/org/internal/types"
 )
 
@@ -39,7 +40,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONMarshaler, bz json.RawMessag
 	if err := cdc.UnmarshalJSON(bz, &data); err != nil {
 		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
 	}
-
+	
 	return data.ValidateGenesis()
 }
 

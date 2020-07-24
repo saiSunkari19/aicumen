@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-
+	
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	tmconfig "github.com/tendermint/tendermint/config"
@@ -16,7 +16,7 @@ import (
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	"github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
-
+	
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clientkeys "github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -45,7 +45,7 @@ var (
 func testnetCmd(ctx *server.Context, cdc *codec.Codec,
 	mbm module.BasicManager, genBalIterator bank.GenesisBalancesIterator,
 ) *cobra.Command {
-
+	
 	cmd := &cobra.Command{
 		Use:   "testnet",
 		Short: "Initialize files for a icd testnet",
@@ -57,7 +57,7 @@ Example:
 	`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			config := ctx.Config
-
+			
 			outputDir := viper.GetString(flagOutputDir)
 			chainID := viper.GetString(flags.FlagChainID)
 			minGasPrices := viper.GetString(server.FlagMinGasPrices)
@@ -66,12 +66,12 @@ Example:
 			nodeCLIHome := viper.GetString(flagNodeCLIHome)
 			startingIPAddress := viper.GetString(flagStartingIPAddress)
 			numValidators := viper.GetInt(flagNumValidators)
-
+			
 			return InitTestnet(cmd, config, cdc, mbm, genBalIterator, outputDir, chainID,
 				minGasPrices, nodeDirPrefix, nodeDaemonHome, nodeCLIHome, startingIPAddress, numValidators)
 		},
 	}
-
+	
 	cmd.Flags().Int(flagNumValidators, 4,
 		"Number of validators to initialize the testnet with")
 	cmd.Flags().StringP(flagOutputDir, "o", "./mytestnet",
@@ -103,25 +103,25 @@ func InitTestnet(
 	outputDir, chainID, minGasPrices, nodeDirPrefix, nodeDaemonHome,
 	nodeCLIHome, startingIPAddress string, numValidators int,
 ) error {
-
+	
 	if chainID == "" {
 		chainID = "chain-" + tmrand.NewRand().Str(6)
 	}
-
+	
 	monikers := make([]string, numValidators)
 	nodeIDs := make([]string, numValidators)
 	valPubKeys := make([]crypto.PubKey, numValidators)
-
+	
 	icConfig := srvconfig.DefaultConfig()
 	icConfig.MinGasPrices = minGasPrices
-
+	
 	// nolint:prealloc
 	var (
 		genAccounts []authexported.GenesisAccount
 		genBalances []bank.Balance
 		genFiles    []string
 	)
-
+	
 	inBuf := bufio.NewReader(cmd.InOrStdin())
 	// generate private keys, node IDs, and initial transactions
 	for i := 0; i < numValidators; i++ {
@@ -129,38 +129,38 @@ func InitTestnet(
 		nodeDir := filepath.Join(outputDir, nodeDirName, nodeDaemonHome)
 		clientDir := filepath.Join(outputDir, nodeDirName, nodeCLIHome)
 		gentxsDir := filepath.Join(outputDir, "gentxs")
-
+		
 		config.SetRoot(nodeDir)
 		config.RPC.ListenAddress = "tcp://0.0.0.0:26657"
-
+		
 		if err := os.MkdirAll(filepath.Join(nodeDir, "config"), nodeDirPerm); err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		if err := os.MkdirAll(clientDir, nodeDirPerm); err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		monikers = append(monikers, nodeDirName)
 		config.Moniker = nodeDirName
-
+		
 		ip, err := getIP(i, startingIPAddress)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		nodeIDs[i], valPubKeys[i], err = genutil.InitializeNodeValidatorFiles(config)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		memo := fmt.Sprintf("%s@%s:26656", nodeIDs[i], ip)
 		genFiles = append(genFiles, config.GenesisFile())
-
+		
 		kb, err := keyring.New(
 			sdk.KeyringServiceName(),
 			viper.GetString(flags.FlagKeyringBackend),
@@ -170,36 +170,36 @@ func InitTestnet(
 		if err != nil {
 			return err
 		}
-
+		
 		keyPass := clientkeys.DefaultKeyPass
 		addr, secret, err := server.GenerateSaveCoinKey(kb, nodeDirName, keyPass, true)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		info := map[string]string{"secret": secret}
-
+		
 		cliPrint, err := json.Marshal(info)
 		if err != nil {
 			return err
 		}
-
+		
 		// save private key seed words
 		if err := writeFile(fmt.Sprintf("%v.json", "key_seed"), clientDir, cliPrint); err != nil {
 			return err
 		}
-
+		
 		accTokens := sdk.TokensFromConsensusPower(1000)
 		accStakingTokens := sdk.TokensFromConsensusPower(500)
 		coins := sdk.Coins{
 			sdk.NewCoin(fmt.Sprintf("%stoken", nodeDirName), accTokens),
 			sdk.NewCoin(sdk.DefaultBondDenom, accStakingTokens),
 		}
-
+		
 		genBalances = append(genBalances, bank.Balance{Address: addr, Coins: coins.Sort()})
 		genAccounts = append(genAccounts, auth.NewBaseAccount(addr, nil, 0, 0))
-
+		
 		valTokens := sdk.TokensFromConsensusPower(100)
 		msg := staking.NewMsgCreateValidator(
 			sdk.ValAddress(addr),
@@ -209,28 +209,28 @@ func InitTestnet(
 			staking.NewCommissionRates(sdk.OneDec(), sdk.OneDec(), sdk.OneDec()),
 			sdk.OneInt(),
 		)
-
+		
 		tx := auth.NewStdTx([]sdk.Msg{msg}, auth.StdFee{}, []auth.StdSignature{}, memo)
 		txBldr := auth.NewTxBuilderFromCLI(inBuf).WithChainID(chainID).WithMemo(memo).WithKeybase(kb)
-
+		
 		signedTx, err := txBldr.SignStdTx(nodeDirName, clientkeys.DefaultKeyPass, tx, false)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		txBytes, err := cdc.MarshalJSON(signedTx)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		// gather gentxs folder
 		if err := writeFile(fmt.Sprintf("%v.json", nodeDirName), gentxsDir, txBytes); err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
 		}
-
+		
 		icConfigFilePath := filepath.Join(nodeDir, "config/icd.toml")
 		srvconfig.WriteConfigFile(icConfigFilePath, icConfig)
 	}
@@ -238,7 +238,7 @@ func InitTestnet(
 	if err := initGenFiles(cdc, mbm, chainID, stakeDenom, genAccounts, genBalances, genFiles, numValidators); err != nil {
 		return err
 	}
-
+	
 	err := collectGenFiles(
 		cdc, config, chainID, monikers, nodeIDs, valPubKeys, numValidators,
 		outputDir, nodeDirPrefix, nodeDaemonHome, genBalIterator,
@@ -246,7 +246,7 @@ func InitTestnet(
 	if err != nil {
 		return err
 	}
-
+	
 	cmd.PrintErrf("Successfully initialized %d node directories\n", numValidators)
 	return nil
 }
@@ -256,28 +256,28 @@ func initGenFiles(
 	genAccounts []authexported.GenesisAccount, genBalances []bank.Balance,
 	genFiles []string, numValidators int,
 ) error {
-
+	
 	appGenState := mbm.DefaultGenesis(cdc)
-
+	
 	// set the accounts in the genesis state
 	var authGenState auth.GenesisState
 	cdc.MustUnmarshalJSON(appGenState[auth.ModuleName], &authGenState)
-
+	
 	authGenState.Accounts = genAccounts
 	appGenState[auth.ModuleName] = cdc.MustMarshalJSON(authGenState)
-
+	
 	// set the balances in the genesis state
 	var bankGenState bank.GenesisState
 	cdc.MustUnmarshalJSON(appGenState[bank.ModuleName], &bankGenState)
-
+	
 	bankGenState.Balances = genBalances
 	appGenState[bank.ModuleName] = cdc.MustMarshalJSON(bankGenState)
-
+	
 	appGenStateJSON, err := codec.MarshalJSONIndent(cdc, appGenState)
 	if err != nil {
 		return err
 	}
-
+	
 	genDoc := types.GenesisDoc{
 		ChainID:    chainID,
 		AppState:   appGenStateJSON,
@@ -291,7 +291,7 @@ func initGenFiles(
 	if err != nil {
 		return err
 	}
-
+	
 	// generate empty genesis files for each validator and save
 	for i := 0; i < numValidators; i++ {
 		if err := genDoc.SaveAs(genFiles[i]); err != nil {
@@ -307,45 +307,45 @@ func collectGenFiles(
 	numValidators int, outputDir, nodeDirPrefix, nodeDaemonHome string,
 	genBalIterator bank.GenesisBalancesIterator,
 ) error {
-
+	
 	var appState json.RawMessage
 	genTime := tmtime.Now()
-
+	
 	for i := 0; i < numValidators; i++ {
 		nodeDirName := fmt.Sprintf("%s%d", nodeDirPrefix, i)
 		nodeDir := filepath.Join(outputDir, nodeDirName, nodeDaemonHome)
 		gentxsDir := filepath.Join(outputDir, "gentxs")
 		moniker := monikers[i]
 		config.Moniker = nodeDirName
-
+		
 		config.SetRoot(nodeDir)
-
+		
 		nodeID, valPubKey := nodeIDs[i], valPubKeys[i]
 		initCfg := genutil.NewInitConfig(chainID, gentxsDir, moniker, nodeID, valPubKey)
-
+		
 		genDoc, err := types.GenesisDocFromFile(config.GenesisFile())
 		if err != nil {
 			return err
 		}
-
+		
 		nodeAppState, err := genutil.GenAppStateFromConfig(cdc, config, initCfg, *genDoc, genBalIterator)
 		if err != nil {
 			return err
 		}
-
+		
 		if appState == nil {
 			// set the canonical application state (they should not differ)
 			appState = nodeAppState
 		}
-
+		
 		genFile := config.GenesisFile()
-
+		
 		// overwrite each validator's genesis file to have a canonical genesis time
 		if err := genutil.ExportGenesisFileWithTime(genFile, chainID, nil, appState, genTime); err != nil {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
@@ -365,27 +365,27 @@ func calculateIP(ip string, i int) (string, error) {
 	if ipv4 == nil {
 		return "", fmt.Errorf("%v: non ipv4 address", ip)
 	}
-
+	
 	for j := 0; j < i; j++ {
 		ipv4[3]++
 	}
-
+	
 	return ipv4.String(), nil
 }
 
 func writeFile(name string, dir string, contents []byte) error {
 	writePath := filepath.Join(dir)
 	file := filepath.Join(writePath, name)
-
+	
 	err := tmos.EnsureDir(writePath, 0700)
 	if err != nil {
 		return err
 	}
-
+	
 	err = tmos.WriteFile(file, contents, 0600)
 	if err != nil {
 		return err
 	}
-
+	
 	return nil
 }

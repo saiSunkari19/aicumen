@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"net/http"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/version"
-	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	rest2 "github.com/cosmos/cosmos-sdk/x/auth/client/rest"

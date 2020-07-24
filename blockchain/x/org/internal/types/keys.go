@@ -7,16 +7,16 @@ const (
 	StoreKey     = ModuleName
 	RouterKey    = ModuleName
 	QuerierRoute = ModuleName
-
+	
 	EmployeePrefix = "employee"
 )
 
 var (
 	EmployeeKey = []byte{0x01}
-
+	
 	ActivatedPrefixKey   = []byte{0x02}
 	DeActivatedPrefixKey = []byte{0x03}
-
+	
 	GlobalEmployeeNumberKey = []byte("globalEmployeeNumber")
 )
 

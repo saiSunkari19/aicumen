@@ -2,9 +2,10 @@ package config
 
 import (
 	"errors"
+	"net/http"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/spf13/viper"
-	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"

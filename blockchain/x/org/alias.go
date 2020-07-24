@@ -24,7 +24,7 @@ type (
 	MsgUpdateEmployeeInfo  = types.MsgUpdateEmployeeInfo
 	MsgDeleteEmployeeInfo  = types.MsgDeleteEmployeeInfo
 	MsgRestoreEmployeeInfo = types.MsgRestoreEmployeeInfo
-
+	
 	Person       = types.Person
 	Employee     = types.Employee
 	Employess    = types.Employess
@@ -40,12 +40,12 @@ var (
 	NewMsgUpdateEmployeeInfo  = types.NewMsgUpdateEmployeeInfo
 	NewMsgDeleteEmployeeInfo  = types.NewMsgDeleteEmployeeInfo
 	NewMsgRestoreEmployeeInfo = types.NewMsgRestoreEmployeeInfo
-
+	
 	RegisterCodec = types.RegisterCodec
 	ModuleCdc     = types.ModuleCdc
-
+	
 	NewQuerier = keeper.NewQuerier
-
+	
 	GetEmployeePrefixKey = types.GetEmployeePrefixKey
 	ErrEmployee          = types.ErrEmployee
 )

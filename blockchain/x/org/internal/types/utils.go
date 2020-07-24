@@ -55,7 +55,7 @@ func (s Skills) String() string {
 	for _, skill := range s {
 		a = a + "\n" + skill
 	}
-
+	
 	return a[:len(a)-1]
 }
 

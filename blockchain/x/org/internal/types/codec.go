@@ -7,7 +7,7 @@ import (
 
 var (
 	amino = codec.New()
-
+	
 	ModuleCdc = codec.NewHybridCodec(amino, types.NewInterfaceRegistry())
 )
 
@@ -18,7 +18,7 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgRestoreEmployeeInfo{}, "Employee/msg_restore_employee_info", nil)
 	cdc.RegisterConcrete(Person{}, "Person", nil)
 	cdc.RegisterConcrete(Employee{}, "Person/Employee", nil)
-
+	
 }
 
 func init() {

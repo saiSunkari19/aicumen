@@ -52,14 +52,14 @@ func (e Employess) Sort() Employess {
 
 func (e Employess) String() string {
 	var a string
-
+	
 	if len(e) == 0 {
 		return ""
 	}
-
+	
 	for _, employee := range e {
 		a = a + "\n" + employee.String()
 	}
-
+	
 	return a[:len(e)-1]
 }

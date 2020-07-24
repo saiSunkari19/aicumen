@@ -6,8 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
-	"github.com/saiSunkari19/aicumen/blockchain/app"
 	"github.com/spf13/cobra"
+
+	"github.com/saiSunkari19/aicumen/blockchain/app"
 
 	internal "github.com/saiSunkari19/aicumen/client/config"
 )

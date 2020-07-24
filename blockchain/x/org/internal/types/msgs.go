@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -18,7 +19,7 @@ type MsgAddEmployeeInfo struct {
 	Department string `json:"department"`
 	Address    string `json:"address"`
 	Skills     Skills `json:"skills"`
-
+	
 	From sdk.AccAddress `json:"from"`
 }
 
@@ -46,7 +47,7 @@ func (m MsgAddEmployeeInfo) ValidateBasic() error {
 	if len(m.Name) == 0 {
 		return sdkerrors.Wrap(ErrInvalidInput, fmt.Sprintf("%s field is empty", m.Name))
 	}
-
+	
 	return nil
 }
 
@@ -91,7 +92,7 @@ func (m MsgUpdateEmployeeInfo) ValidateBasic() error {
 	if len(m.Id) == 0 {
 		return sdkerrors.Wrap(ErrInvalidInput, "id not found")
 	}
-
+	
 	return nil
 }
 
@@ -132,7 +133,7 @@ func (m MsgDeleteEmployeeInfo) ValidateBasic() error {
 	if len(m.Id) == 0 {
 		return sdkerrors.Wrap(ErrInvalidInput, fmt.Sprintf("invalid id %s", m.Id))
 	}
-
+	
 	return nil
 }
 

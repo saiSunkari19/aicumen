@@ -31,7 +31,7 @@ func initConfig(cmd *cobra.Command, ) error {
 	}
 
 	config = &conf.Config{}
-	viper.SetConfigFile(cfgFile) //TODO: accept any type of config file
+	viper.SetConfigFile(cfgFile) // TODO: accept any type of config file
 	if err := viper.ReadInConfig(); err != nil {
 		log.Info().Err(err).Msg("unable to read the config existed config")
 		return err
