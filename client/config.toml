@@ -1,0 +1,7 @@
+home="/home/saisunkari19/.appcli"
+key-name="relayer"
+rpc-addr="http://localhost:26657"
+chain-id="chain-1"
+keybase-service-name="app"
+port="localhost:8080"
+broadcast-mode="async"
