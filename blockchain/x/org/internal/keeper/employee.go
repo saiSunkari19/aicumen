@@ -3,10 +3,10 @@ package keeper
 import (
 	"sort"
 	"strings"
-
+	
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
+	
 	"github.com/saiSunkari19/aicumen/blockchain/types/store"
 	"github.com/saiSunkari19/aicumen/blockchain/x/org/internal/types"
 )
@@ -73,6 +73,7 @@ func (keeper Keeper) GetEmployee(ctx sdk.Context, id string) (info types.Employe
 		return types.Employee{}, false
 	}
 	
+	info.Person.Skills.Sort()
 	return info, true
 }
 

@@ -17,6 +17,7 @@ const (
 	QueryByName            = keeper.QueryByName
 	QueryActiveEmployees   = keeper.QueryActiveEmployees
 	QueryDeActiveEmployees = keeper.QueryDeActiveEmployees
+	QueryBySearch          = keeper.QueryBySearch
 )
 
 type (

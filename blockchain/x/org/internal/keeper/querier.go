@@ -18,6 +18,7 @@ const (
 	QueryDeActiveEmployees = "deactive_employees"
 	QueryByDepartment      = "dept"
 	QueryByName            = "name"
+	QueryBySearch          = "search"
 )
 
 func NewQuerier(k Keeper) sdk.Querier {
@@ -34,6 +35,8 @@ func NewQuerier(k Keeper) sdk.Querier {
 			return queryByDepartment(ctx, path[1:], k)
 		case QueryByName:
 			return queryByName(ctx, path[1:], k)
+		case QueryBySearch:
+			return queryBySearch(ctx, path[1:], k)
 		default:
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unknown query path: %s", path[0])
 			
@@ -124,4 +127,68 @@ func queryByName(ctx sdk.Context, path []string, k Keeper) ([]byte, error) {
 	}
 	
 	return res, nil
+}
+
+func queryBySearch(ctx sdk.Context, path []string, keeper Keeper) ([]byte, error) {
+	employeees := keeper.GetEmployees(ctx)
+	var updatedEmployees types.Employess
+	
+	switch path[0] {
+	case "dept":
+		for _, employee := range employeees {
+			if strings.EqualFold(employee.Department, path[1]) {
+				updatedEmployees = append(updatedEmployees, employee)
+			}
+		}
+		return marshalBinary(keeper.cdc, updatedEmployees)
+	case "name":
+		for _, employee := range employeees {
+			if strings.EqualFold(employee.Person.Name, path[1]) {
+				updatedEmployees = append(updatedEmployees, employee)
+			}
+		}
+		return marshalBinary(keeper.cdc, updatedEmployees)
+	case "addr":
+		for _, employee := range employeees {
+			if strings.EqualFold(employee.Person.Address, path[1]) {
+				updatedEmployees = append(updatedEmployees, employee)
+			}
+		}
+		return marshalBinary(keeper.cdc, updatedEmployees)
+	case "skills":
+		skills := strings.Split(path[1], ",")
+		if len(skills) == 0 {
+			return nil, nil
+		}
+		
+		m := make(map[string]bool)
+		for _, skill := range skills {
+			m[skill] = true
+		}
+		
+		for _, employee := range employeees {
+			c := 0
+			for _, s := range employee.Person.Skills {
+				if _, ok := m[s]; ok {
+					c += 1
+				}
+			}
+			if c >= len(skills) {
+				updatedEmployees = append(updatedEmployees, employee)
+			}
+		}
+		return marshalBinary(keeper.cdc, updatedEmployees)
+	}
+	
+	return nil, nil
+}
+
+func marshalBinary(cdc *codec.Codec, employees types.Employess) ([]byte, error) {
+	res, err := codec.MarshalJSONIndent(cdc, employees)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+	
+	return res, nil
+	
 }

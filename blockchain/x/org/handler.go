@@ -74,8 +74,9 @@ func handleMsgUpdateEmployeeInfo(ctx sdk.Context, k Keeper, msg MsgUpdateEmploye
 		employee.Person.Address = msg.Address
 	}
 	
-	if len(msg.Skills) > 0 {
-		for _, skill := range msg.Skills {
+	skills := msg.Skills.Sort()
+	if len(skills) > 0 {
+		for _, skill := range skills {
 			_, found := employee.Person.Skills.Find(skill)
 			if !found {
 				employee.Person.Skills = append(employee.Person.Skills, skill)
