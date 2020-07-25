@@ -17,7 +17,7 @@ API Documentation
     "skills":["c","c++","java"]
 }
 ```
-- Response when I use broadcast mode `async`
+- Response when we use broadcast mode `async`
 ```json
 {
     "height": "0",
