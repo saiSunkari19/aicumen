@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // -----------------------------------------------------------------
@@ -11,6 +13,7 @@ type Person struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Skills  `json:"skills"`
+	Owner   sdk.AccAddress `json:"owner"`
 }
 
 func (p Person) String() string {
@@ -18,7 +21,8 @@ func (p Person) String() string {
 Name: %s,
 Address: %s,
 Skills: %s,
-`, p.Name, p.Address, p.Skills.Sort())
+Owner: %s,
+`, p.Name, p.Address, p.Skills.Sort(), p.Owner.String())
 }
 
 type Employee struct {

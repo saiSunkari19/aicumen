@@ -37,6 +37,7 @@ func handleMsgAddEmployeeInfo(ctx sdk.Context, keeper Keeper, msg MsgAddEmployee
 			Name:    msg.Name,
 			Address: msg.Address,
 			Skills:  msg.Skills,
+			Owner:   msg.From,
 		},
 		ID:         id,
 		Department: msg.Department,
@@ -52,6 +53,12 @@ func handleMsgAddEmployeeInfo(ctx sdk.Context, keeper Keeper, msg MsgAddEmployee
 	}
 	keeper.SetActiveEmployee(ctx, id)
 	
+	ctx.EventManager().EmitEvent(sdk.NewEvent(
+		EventTypeMsgAddEmployes,
+		sdk.NewAttribute(AttributeKeyEmployeeID, employe.ID),
+		sdk.NewAttribute(sdk.AttributeKeySender, msg.From.String()),
+	))
+	
 	return &sdk.Result{Events: ctx.EventManager().ABCIEvents()}, nil
 }
 
@@ -60,6 +67,10 @@ func handleMsgUpdateEmployeeInfo(ctx sdk.Context, k Keeper, msg MsgUpdateEmploye
 	employee, found := k.GetEmployee(ctx, msg.Id)
 	if !found {
 		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee %s not found", msg.Id))
+	}
+	
+	if !employee.Person.Owner.Equals(msg.From) {
+		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee unauthorised %s", msg.From))
 	}
 	
 	if employee.Status != StatusActive {
@@ -97,6 +108,10 @@ func handleMsgDeleteEmployeeInfo(ctx sdk.Context, keeper Keeper, msg MsgDeleteEm
 		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee %s not found", msg.Id))
 	}
 	
+	if !employee.Person.Owner.Equals(msg.From) {
+		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee unauthorised %s", msg.From))
+	}
+	
 	if msg.Remove {
 		if err := keeper.DeleteEmployeeInfo(ctx, msg.Id); err != nil {
 			return nil, err
@@ -123,6 +138,11 @@ func handleMsgRestoreEmployeeInfo(ctx sdk.Context, keeper Keeper, msg MsgRestore
 	if !found {
 		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee %s not found", msg.Id))
 	}
+	
+	if !employee.Person.Owner.Equals(msg.From) {
+		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("employee unauthorised %s", msg.From))
+	}
+	
 	if employee.Status != StatusInactive {
 		return nil, sdkerrors.Wrap(ErrEmployee, fmt.Sprintf("invalid employee status "))
 	}

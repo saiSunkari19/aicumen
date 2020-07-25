@@ -45,7 +45,9 @@ var (
 	RegisterCodec = types.RegisterCodec
 	ModuleCdc     = types.ModuleCdc
 	
-	NewQuerier = keeper.NewQuerier
+	NewQuerier              = keeper.NewQuerier
+	EventTypeMsgAddEmployes = types.EventTypeMsgAddEmployes
+	AttributeKeyEmployeeID  = types.AttributeKeyEmployeeID
 	
 	GetEmployeePrefixKey = types.GetEmployeePrefixKey
 	ErrEmployee          = types.ErrEmployee
