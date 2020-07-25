@@ -20,16 +20,16 @@ build:
 	go build -o bin/appd ./cmd/appd
 
 unit-test:
-	go test -mod=readonly ./...
+	go test -mod=readonly ./... -v
 
 # TODO : Think a diffrent way to install
 install: go.sum
-		go build -mod=mod $(BUILD_FLAGS) -o $${GOBIN-$${GOPATH-$$HOME/go}/bin}/appd ./cmd/appd
-		go build -mod=mod $(BUILD_FLAGS) -o $${GOBIN-$${GOPATH-$$HOME/go}/bin}/appcli ./cmd/appcli
+	go build -mod=mod $(BUILD_FLAGS) -o $${GOBIN-$${GOPATH-$$HOME/go}/bin}/appd ./cmd/appd
+	go build -mod=mod $(BUILD_FLAGS) -o $${GOBIN-$${GOPATH-$$HOME/go}/bin}/appcli ./cmd/appcli
 
 go.sum: go.mod
-		@echo "--> Ensure dependencies have not been modified"
-		GO111MODULE=on go mod verify
+	echo "--> Ensure dependencies have not been modified"
+	GO111MODULE=on go mod verify
 
 build-linux:
 	GOARCH=amd64 GOOS=linux go build -o bin/appd ./cmd/appd
@@ -39,8 +39,8 @@ docker-test: build-linux
 	docker build -f Dockerfile.test -t saiSunkari19/blockchain:latest .
 
 lint:
-	@echo "--> Running linter"
-	@golangci-lint run
-	@go mod verify
+	echo "--> Running linter"
+	golangci-lint run
+	go mod verify
 
 .PHONY: install unit-test

@@ -17,11 +17,51 @@ API Documentation
     "skills":["c","c++","java"]
 }
 ```
-- Response 
+- Response when I use broadcast mode `async`
 ```json
 {
     "height": "0",
     "txhash": "6B20F16965594D30F0AB505C2A0BF9F8B633215318B4982D61C962C0F2184330"
+}
+```
+- Resonse when I use broadcast mode `block`
+```json
+{
+    "height": "37",
+    "txhash": "09F55A4BC1CE36E5A4FA875056FB436745C95C9E0BC51038CB04912E6AC5E09D",
+    "raw_log": "[{\"msg_index\":0,\"log\":\"\",\"events\":[{\"type\":\"events_msg_add_employee\",\"attributes\":[{\"key\":\"employee_id\",\"value\":\"employee0\"},{\"key\":\"sender\",\"value\":\"cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"msg_add_employee\"}]}]}]",
+    "logs": [
+        {
+            "msg_index": 0,
+            "log": "",
+            "events": [
+                {
+                    "type": "events_msg_add_employee",
+                    "attributes": [
+                        {
+                            "key": "employee_id",
+                            "value": "employee0"
+                        },
+                        {
+                            "key": "sender",
+                            "value": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
+                        }
+                    ]
+                },
+                {
+                    "type": "message",
+                    "attributes": [
+                        {
+                            "key": "action",
+                            "value": "msg_add_employee"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "gas_wanted": "49584",
+    "gas_used": "48506"
 }
 ```
 
@@ -131,7 +171,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee6",
             "department": "tech",
@@ -172,7 +213,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee8",
             "department": "mg",
@@ -201,7 +243,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee5",
             "department": "tech",
@@ -215,7 +258,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee6",
             "department": "tech",
@@ -244,7 +288,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee8",
             "department": "mg",
@@ -273,7 +318,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee3",
             "department": "tech",
@@ -303,7 +349,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee3",
             "department": "tech",
@@ -330,7 +377,8 @@ API Documentation
                 "address": "KNR",
                 "skills": [
                     "rust"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee4",
             "department": "mg",
@@ -345,7 +393,8 @@ API Documentation
                     "java",
                     "c++",
                     "rust"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee5",
             "department": "mg",
@@ -373,7 +422,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee3",
             "department": "tech",
@@ -401,7 +451,8 @@ API Documentation
                     "c",
                     "c++",
                     "java"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee3",
             "department": "tech",
@@ -416,7 +467,8 @@ API Documentation
                     "java",
                     "c++",
                     "rust"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee5",
             "department": "mg",
@@ -443,7 +495,8 @@ API Documentation
                 "skills": [
                      "c",
                     "rust"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee4",
             "department": "mg",
@@ -458,7 +511,8 @@ API Documentation
                     "java",
                     "c++",
                     "rust"
-                ]
+                ],
+                 "owner": "cosmos1yddf3fz00v35m7newqnfq6cqjvsnzq60356awz"
             },
             "id": "employee5",
             "department": "mg",

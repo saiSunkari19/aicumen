@@ -35,3 +35,9 @@ Blockchain Server
 ```bash
     appd start
 ```
+
+
+- Test 
+```bash
+    make unit-test
+```
